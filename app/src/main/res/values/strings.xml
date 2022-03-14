@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">AppArena</string>
+    <string name="str_clientes">Clientes</string>
+    <string name="str_produtos">Produtos</string>
+    <string name="title_activity_cliente">ClienteActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="str_nome">Nome</string>
+    <string name="str_celular">Celular</string>
+    <string name="str_apelido">Apelido</string>
+    <string name="str_btn_cadastrar">Cadastrar</string>
+    <string name="str_cadastro_clientes">Cadastro de Clientes</string>
+    <string name="txt_id_5">Id: 5</string>
+    <string name="nome_teste_de_teste">Nome: Teste de Teste de Teste</string>
+    <string name="apelido_teste_de_teste">Apelido: Jogador 10</string>
+    <string name="str_cadastro_de_produtos">Cadastro de Produtos</string>
+    <string name="str_hint_descricao">Descrição</string>
+    <string name="str_hint_valor">Preço de Venda</string>
+    <string name="str_hint_preco_custo">Preço de Custo</string>
+    <string name="str_hint_cpf">CPF</string>
+    <string name="btn_atualizar">ATUALIZAR</string>
+    <string name="cpf_teste">cpf: 12345678900</string>
+    <string name="str_vendas">Vendas</string>
+</resources>
