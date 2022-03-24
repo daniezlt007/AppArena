@@ -1,5 +1,6 @@
 package com.deadsystem.apparena.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,17 +10,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.deadsystem.apparena.R;
+import com.deadsystem.apparena.entities.ClienteEntity;
 import com.deadsystem.apparena.holder.ClienteViewHolder;
-import com.deadsystem.apparena.model.Cliente;
 
 import java.util.List;
 
 public class ClienteAdapter extends RecyclerView.Adapter<ClienteViewHolder> {
 
-    private List<Cliente> mList;
+    private List<ClienteEntity> mClientesList;
+    private Context context;
+    private ClienteViewHolder.HandleClienteClick clienteClick;
 
-    public ClienteAdapter(List<Cliente> mList) {
-        this.mList = mList;
+    public ClienteAdapter(Context context, ClienteViewHolder.HandleClienteClick clienteClick) {
+        this.context = context;
+        this.clienteClick = clienteClick;
+    }
+
+    public void setmClientesList(List<ClienteEntity> mClientesList) {
+        this.mClientesList = mClientesList;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -31,14 +40,26 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteViewHolder> {
         return new ClienteViewHolder(view);
     }
 
+
+    @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(@NonNull ClienteViewHolder holder, int position) {
-        Cliente cliente = this.mList.get(position);
-        holder.bind(cliente);
+        holder.bind(mClientesList.get(position));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clienteClick.itemClick(mClientesList.get(position));
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return this.mList.size();
+        if (this.mClientesList == null || this.mClientesList.size() == 0) {
+            return 0;
+        } else {
+            return this.mClientesList.size();
+        }
     }
+
 }

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,12 +12,9 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.deadsystem.apparena.R;
-import com.deadsystem.apparena.adapter.ClienteAdapter;
 import com.deadsystem.apparena.adapter.ProdutoAdapter;
-import com.deadsystem.apparena.dao.ClienteDAO;
 import com.deadsystem.apparena.dao.ProdutoDAO;
 import com.deadsystem.apparena.helper.RecyclerItemClickListener;
-import com.deadsystem.apparena.model.Cliente;
 import com.deadsystem.apparena.model.Produto;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -56,7 +52,7 @@ public class ProdutoActivity extends AppCompatActivity {
                     public void onLongItemClick(View view, int position) {
                         produtoSelecionado = produtos.get(position);
                         AlertDialog.Builder dialog = new AlertDialog.Builder(ProdutoActivity.this);
-                        dialog.setTitle("Confirma Exclusão?");
+                        dialog.setTitle("Confirma Exclusão");
                         dialog.setMessage("Deseja excluir o produto:\n" + produtoSelecionado.getDescricao() + " ?");
                         dialog.setPositiveButton("Sim", (dialogInterface, i) -> {
                             ProdutoDAO produtoDAO = new ProdutoDAO(ProdutoActivity.this);

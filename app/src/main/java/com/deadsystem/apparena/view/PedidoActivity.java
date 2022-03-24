@@ -9,9 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.deadsystem.apparena.R;
-import com.deadsystem.apparena.dao.ClienteDAO;
-import com.deadsystem.apparena.dao.ProdutoDAO;
-import com.deadsystem.apparena.helper.Util;
 import com.deadsystem.apparena.model.Cliente;
 
 import java.util.List;
@@ -33,8 +30,7 @@ public class PedidoActivity extends AppCompatActivity {
     }
 
     private List<Cliente> preencherComboBoxCliente(){
-        ClienteDAO clienteDAO = new ClienteDAO(PedidoActivity.this);
-        List<Cliente> clientes = clienteDAO.buscarTodosClientes();
+        List<Cliente> clientes = null;
         return clientes;
     }
 

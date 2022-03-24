@@ -2,69 +2,74 @@ package com.deadsystem.apparena.view;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.deadsystem.apparena.R;
-import com.deadsystem.apparena.dao.ClienteDAO;
+import com.deadsystem.apparena.entities.ClienteEntity;
 import com.deadsystem.apparena.model.Cliente;
+import com.deadsystem.apparena.viewmodel.ClienteViewModel;
 
 public class FormClientActivity extends AppCompatActivity {
 
+    private ClienteViewModel clienteViewModel;
     private Button btnSalvarCliente;
     private TextView txtNomeCliente, txtCelularCliente, txtApelidoCliente, txtCpfCliente;
-    private Cliente clienteAtual;
+    private ClienteEntity clienteAtual;
     private Long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_client);
+        initViewModel();
 
         initComponents();
 
-        clienteAtual = (Cliente) getIntent().getSerializableExtra("clienteSelecionado");
+        clienteAtual = (ClienteEntity) getIntent().getSerializableExtra("clienteSelecionado");
         if (clienteAtual != null) {
             btnSalvarCliente.setText(R.string.btn_atualizar);
-            id = clienteAtual.getId();
-            txtNomeCliente.setText(clienteAtual.getNomeCliente());
-            txtCelularCliente.setText(clienteAtual.getTelefoneCliente());
-            txtCpfCliente.setText(clienteAtual.getCpfcliente());
-            txtApelidoCliente.setText(clienteAtual.getApelidoCliente());
+            id = clienteAtual.id;
+            txtNomeCliente.setText(clienteAtual.nomeCliente);
+            txtCelularCliente.setText(clienteAtual.telefoneCliente);
+            txtCpfCliente.setText(clienteAtual.cpfcliente);
+            txtApelidoCliente.setText(clienteAtual.apelidoCliente);
         }
-        ClienteDAO clienteDAO = new ClienteDAO(FormClientActivity.this);
+
         btnSalvarCliente.setOnClickListener(view1 -> {
-            if(clienteAtual != null){
-                String nomeCliente = txtNomeCliente.getText().toString().toUpperCase();
-                String celularCliente = txtCelularCliente.getText().toString();
-                String cpfCliente = txtCelularCliente.getText().toString();
-                String apelidoCliente = txtApelidoCliente.getText().toString();
-
-                clienteAtual = new Cliente(id, nomeCliente, celularCliente, cpfCliente, apelidoCliente);
-
-                if (clienteDAO.atualizarCliente(clienteAtual)) {
-                    Toast.makeText(FormClientActivity.this, "Atualizado com sucesso.", Toast.LENGTH_LONG).show();
-                    finish();
-                }
+            if (clienteAtual != null) {
+                clienteAtual.id = id;
+                clienteAtual.nomeCliente = txtNomeCliente.getText().toString().toUpperCase();
+                clienteAtual.telefoneCliente = txtCelularCliente.getText().toString();
+                clienteAtual.apelidoCliente = txtApelidoCliente.getText().toString();
+                clienteAtual.cpfcliente = txtCpfCliente.getText().toString();
+                clienteViewModel.updateClient(clienteAtual);
+                Toast.makeText(FormClientActivity.this, "Atualizado com sucesso.", Toast.LENGTH_LONG).show();
+                finish();
             } else {
-                clienteAtual = montaObjetoCliente();
-                if(clienteDAO.verificaNomeDuplicadoNoBanco(clienteAtual.getNomeCliente(), clienteAtual.getCpfcliente())){
+                if (txtNomeCliente.getText().toString().isEmpty()) {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(FormClientActivity.this);
                     dialog.setTitle("Erro");
-                    dialog.setMessage("Cliente com o nome: \n" + clienteAtual.getNomeCliente() + " já está cadastrado");
+                    dialog.setMessage("Cliente com o nome: \n" + clienteAtual.nomeCliente + " já está cadastrado");
                     dialog.setPositiveButton("Ok", null);
                     dialog.create();
                     dialog.show();
+                    id = null;
                     clienteAtual = null;
-                }else {
-                    if (clienteDAO.salvarCliente(clienteAtual)) {
-                        Toast.makeText(FormClientActivity.this, "Salvo com sucesso.", Toast.LENGTH_LONG).show();
-                        finish();
-                    }
+                } else {
+                    clienteAtual = new ClienteEntity();
+                    clienteAtual.nomeCliente = txtNomeCliente.getText().toString().toUpperCase();;
+                    clienteAtual.telefoneCliente = txtCelularCliente.getText().toString();
+                    clienteAtual.apelidoCliente = txtApelidoCliente.getText().toString();
+                    clienteAtual.cpfcliente = txtCpfCliente.getText().toString();
+
+                    clienteViewModel.insertClient(clienteAtual);
+                    Toast.makeText(FormClientActivity.this, "Salvo com sucesso.", Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
 
@@ -80,12 +85,8 @@ public class FormClientActivity extends AppCompatActivity {
         txtCpfCliente = findViewById(R.id.txtCpf);
     }
 
-    private Cliente montaObjetoCliente() {
-        String nome = txtNomeCliente.getText().toString().toUpperCase();
-        String celular = txtCelularCliente.getText().toString();
-        String apelido = txtApelidoCliente.getText().toString();
-        String cpf = txtCpfCliente.getText().toString();
-        return new Cliente(nome, celular, apelido, cpf);
+    private void initViewModel() {
+        clienteViewModel = new ViewModelProvider(this).get(ClienteViewModel.class);
     }
 
 

@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.deadsystem.apparena.R;
+import com.deadsystem.apparena.entities.ClienteEntity;
 import com.deadsystem.apparena.model.Cliente;
 
 public class ClienteViewHolder extends RecyclerView.ViewHolder {
@@ -21,11 +22,17 @@ public class ClienteViewHolder extends RecyclerView.ViewHolder {
         this.txtViewCpf = itemView.findViewById(R.id.txt_view_apelido2);
     }
 
-    public void bind(Cliente cliente){
-        this.txtViewId.setText(cliente.getId().toString());
-        this.txtViewNome.setText(cliente.getNomeCliente());
-        this.txtViewApelido.setText(cliente.getApelidoCliente());
-        this.txtViewCpf.setText(cliente.getCpfcliente());
+    public void bind(ClienteEntity cliente){
+        this.txtViewId.setText(cliente.id.toString());
+        this.txtViewNome.setText(cliente.nomeCliente);
+        this.txtViewApelido.setText(cliente.apelidoCliente);
+        this.txtViewCpf.setText(cliente.cpfcliente);
+    }
+
+    public interface  HandleClienteClick {
+        void itemClick(ClienteEntity clienteEntity);
+        void removeItem(ClienteEntity clienteEntity);
+        void editItem(ClienteEntity clienteEntity);
     }
 
 }
