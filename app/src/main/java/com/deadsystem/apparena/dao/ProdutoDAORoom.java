@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.deadsystem.apparena.entities.ProdutoEntity;
 import com.deadsystem.apparena.model.Cliente;
 import com.deadsystem.apparena.model.Produto;
 
@@ -15,15 +16,15 @@ import java.util.List;
 public interface ProdutoDAORoom {
 
     @Query("select * from produto")
-    List<Produto> getAllProducts();
+    List<ProdutoEntity> getAllProducts();
 
     @Insert
-    Boolean insertProduct(Produto...produtos);
+    void insertProduct(ProdutoEntity...produtos);
 
     @Update
-    Boolean updateProduct(Produto produto);
+    void updateProduct(ProdutoEntity produto);
 
     @Delete
-    Boolean deleteProduct(Produto produto);
+    void deleteProduct(ProdutoEntity produto);
 
 }

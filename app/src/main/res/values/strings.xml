@@ -11,9 +11,9 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="str_nome">Nome</string>
-    <string name="str_celular">Celular</string>
-    <string name="str_apelido">Apelido</string>
+    <string name="str_nome">Nome:</string>
+    <string name="str_celular">Celular:</string>
+    <string name="str_apelido">Apelido:</string>
     <string name="str_btn_cadastrar">Cadastrar</string>
     <string name="str_cadastro_clientes">Cadastro de Clientes</string>
     <string name="txt_id_5">Id: 5</string>
@@ -27,4 +27,5 @@
     <string name="btn_atualizar">ATUALIZAR</string>
     <string name="cpf_teste">cpf: 12345678900</string>
     <string name="str_vendas">Vendas</string>
+    <string name="string_txt_celular">Celular: 91989673333</string>
 </resources>

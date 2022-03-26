@@ -7,6 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.deadsystem.apparena.dao.ClienteDAORoom;
+import com.deadsystem.apparena.dao.ProdutoDAORoom;
 import com.deadsystem.apparena.entities.ClienteEntity;
 import com.deadsystem.apparena.entities.PedidoEntity;
 import com.deadsystem.apparena.entities.ProdutoEntity;
@@ -15,6 +16,7 @@ import com.deadsystem.apparena.entities.ProdutoEntity;
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract ClienteDAORoom clienteDAORoom();
+    public abstract ProdutoDAORoom produtoDAORoom();
 
     public static AppDatabase INSTANCE;
 

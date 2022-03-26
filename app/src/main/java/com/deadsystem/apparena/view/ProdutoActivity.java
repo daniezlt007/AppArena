@@ -2,31 +2,44 @@ package com.deadsystem.apparena.view;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.deadsystem.apparena.R;
+import com.deadsystem.apparena.adapter.ClienteAdapter;
 import com.deadsystem.apparena.adapter.ProdutoAdapter;
 import com.deadsystem.apparena.dao.ProdutoDAO;
+import com.deadsystem.apparena.entities.ClienteEntity;
+import com.deadsystem.apparena.entities.ProdutoEntity;
 import com.deadsystem.apparena.helper.RecyclerItemClickListener;
+import com.deadsystem.apparena.holder.ClienteViewHolder;
+import com.deadsystem.apparena.holder.ProdutoViewHolder;
 import com.deadsystem.apparena.model.Produto;
+import com.deadsystem.apparena.viewmodel.ClienteViewModel;
+import com.deadsystem.apparena.viewmodel.ProdutoViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
-public class ProdutoActivity extends AppCompatActivity {
+public class ProdutoActivity extends AppCompatActivity implements ProdutoViewHolder.HandleProdutoClick {
 
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
     private ProdutoAdapter adapter;
-    private List<Produto> produtos;
-    private Produto produtoSelecionado;
+    private ProdutoViewModel viewModel;
+    private TextView textViewResultProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +47,19 @@ public class ProdutoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_produto);
 
         fab = findViewById(R.id.fab);
+        textViewResultProduct = findViewById(R.id.textViewResultProduct);
+
+
         recyclerView = findViewById(R.id.recycler);
-        atualizaRecyclerView();
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(
+        initViewModel();
+        initRecycler();
+
+
+
+
+
+
+      /*  recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(
                 getApplicationContext(),
                 recyclerView,
                 new RecyclerItemClickListener.OnItemClickListener() {
@@ -73,7 +96,7 @@ public class ProdutoActivity extends AppCompatActivity {
 
                     }
                 }
-        ));
+        ));*/
 
         fab.setOnClickListener(view ->
                 startActivity(new Intent(ProdutoActivity.this, FormProdutoActivity.class)));
@@ -81,19 +104,49 @@ public class ProdutoActivity extends AppCompatActivity {
 
     }
 
-    private void atualizaRecyclerView() {
-        ProdutoDAO dao = new ProdutoDAO(ProdutoActivity.this);
-        produtos = dao.buscarTodosProdutos();
+    private void initRecycler() {
         recyclerView.setLayoutManager(new LinearLayoutManager(ProdutoActivity.this));
-        adapter = new ProdutoAdapter(produtos);
-        adapter.notifyDataSetChanged();
+        adapter = new ProdutoAdapter(this, this);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void initViewModel(){
+        viewModel = new ViewModelProvider(this).get(ProdutoViewModel.class);
+        viewModel.getListProdutoObserver().observe(this, new Observer<List<ProdutoEntity>>() {
+            @Override
+            public void onChanged(List<ProdutoEntity> produtos) {
+                if(produtos == null){
+                    textViewResultProduct.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                }else{
+                    adapter.setmProdutosList(produtos);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    textViewResultProduct.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        atualizaRecyclerView();
+        viewModel.getAllProducts();
     }
 
+    @Override
+    public void itemClick(ProdutoEntity produtoEntity) {
+        Intent intent = new Intent(ProdutoActivity.this, FormProdutoActivity.class);
+        intent.putExtra("produtoSelecionado", produtoEntity);
+        startActivity(intent);
+    }
+
+    @Override
+    public void removeItem(ProdutoEntity produtoEntity) {
+
+    }
+
+    @Override
+    public void editItem(ProdutoEntity produtoEntity) {
+
+    }
 }

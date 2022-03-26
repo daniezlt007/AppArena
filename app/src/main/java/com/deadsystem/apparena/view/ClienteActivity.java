@@ -86,7 +86,7 @@ public class ClienteActivity extends AppCompatActivity implements ClienteViewHol
 
     @Override
     public void removeItem(ClienteEntity clienteEntity) {
-
+        this.viewModel.deleteClient(clienteEntity);
     }
 
     @Override
